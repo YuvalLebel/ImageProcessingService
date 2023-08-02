@@ -51,17 +51,41 @@ class Img:
             self.data[i] = res
 
     def rotate(self):
-        # TODO remove the `raise` below, and write your implementation
-        raise NotImplementedError()
+        mat = self.data
+        len1 = len(mat) - 1
+        len2 = len(mat[0])
+        tmp_lst = []
+        finel_lst = []
+        for i in range(len2):
+            for j in range(len1, -1, -1):
+                tmp_lst.append(mat[j][i])
+            finel_lst.append(tmp_lst)
+            tmp_lst = []
+        self.data = finel_lst
+
+        #raise NotImplementedError()
 
     def salt_n_pepper(self):
         # TODO remove the `raise` below, and write your implementation
         raise NotImplementedError()
 
     def concat(self, other_img, direction='horizontal'):
-        # TODO remove the `raise` below, and write your implementation
+        # Horizontal append
+        appended_pic = []
+
+        for i in range(len(my_img)):
+            row = pic1[i] + pic2[i]
+            appended_pic.append(row)
+
+        print(appended_pic)
+
         raise NotImplementedError()
 
     def segment(self):
         # TODO remove the `raise` below, and write your implementation
         raise NotImplementedError()
+
+
+if __name__ == "__main__":
+    my_img = Img('/home/yuval1911/Downloads/crossfit.jpg')
+    my_img.save_img()

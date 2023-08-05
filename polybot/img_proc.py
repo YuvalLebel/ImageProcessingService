@@ -70,16 +70,19 @@ class Img:
         raise NotImplementedError()
 
     def concat(self, other_img, direction='horizontal'):
-        # Horizontal append
-        appended_pic = []
+        if len(self.data) == len(other_img.data) and len(self.data[0]) == len(other_img.data[0]):
+            appended_pic = []
+            pic1 = self.data
+            pic2 = other_img.data
+            for i in range(len(pic1)):
+                row = pic1[i] + pic2[i]
+                appended_pic.append(row)
 
-        for i in range(len(my_img)):
-            row = pic1[i] + pic2[i]
-            appended_pic.append(row)
+            other_img.data = appended_pic
+        else:
+            raise RuntimeError("Sorry, The photos are not the same Dimension")
 
-        print(appended_pic)
 
-        raise NotImplementedError()
 
     def segment(self):
         # TODO remove the `raise` below, and write your implementation
@@ -88,4 +91,7 @@ class Img:
 
 if __name__ == "__main__":
     my_img = Img('/home/yuval1911/Downloads/crossfit.jpg')
-    my_img.save_img()
+    my_img2 = Img('/home/yuval1911/Downloads/crossfit.jpg')
+    my_img.concat(my_img2)
+    my_img2.save_img()
+

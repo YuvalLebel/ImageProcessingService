@@ -76,9 +76,11 @@ class QuoteBot(Bot):
 class ImageProcessingBot(Bot):
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
-
-        path_img = msg.download_user_photo()
+        chat_id = msg['chat']['id']
+        path_img = self.download_user_photo(msg)
         img = Img(path_img)
         img.blur()
-        img.save_img()
-        msg.send_photo()
+        new_img = img.save_img()
+        self.send_photo(chat_id , new_img)
+
+

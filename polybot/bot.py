@@ -76,6 +76,10 @@ class QuoteBot(Bot):
 class ImageProcessingBot(Bot):
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
+        try:
+            msg(dict.get('text'))
+        except:
+            raise RuntimeError('Please send a photo with a caption')
         chat_id = msg['chat']['id']
         path_img = self.download_user_photo(msg)
         img = Img(path_img)

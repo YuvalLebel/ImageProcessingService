@@ -77,9 +77,8 @@ class ImageProcessingBot(Bot):
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
         try:
-            text = msg.get('text')  # Get the 'text' value from the message dictionary
-            if text is None:
-                raise RuntimeError('No text in the message')
+            if 'text' in msg:
+                raise RuntimeError("'text' key exists in the message")
             chat_id = msg['chat']['id']
             path_img = self.download_user_photo(msg)
             img = Img(path_img)

@@ -79,10 +79,26 @@ class ImageProcessingBot(Bot):
         try:
             if 'text' in msg:
                 raise RuntimeError("'text' key exists in the message")
+            caption = msg.get('caption')  # Get the 'caption' value from the message dictionary
+
+            if caption is None:
+                raise RuntimeError('No caption in the message')
             chat_id = msg['chat']['id']
             path_img = self.download_user_photo(msg)
             img = Img(path_img)
-            img.blur()
+
+            processing_functions = {
+                'blur': img.blur,
+                'contour': img.contour,
+                'rotate': img.rotate
+            }
+
+            processing_function = processing_functions.get(caption)
+
+            if processing_function is None:
+                raise RuntimeError(f"Invalid caption: {caption}")
+
+            processing_function()
             new_img = img.save_img()
             self.send_photo(chat_id, new_img)
         except RuntimeError as e:

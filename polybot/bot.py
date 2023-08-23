@@ -76,7 +76,8 @@ class QuoteBot(Bot):
 class ImageProcessingBot(Bot):
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
-        self.send_text(msg['chat']['id'], "wellcom to yuval photo bot.\n please sent a photo with a caption.\n and you will receive the photo altered")
+        self.send_text(msg['chat']['id'], "welcome to yuval photo bot.\n please sent a photo with a caption.\n and "
+                                          "you will receive the photo altered")
         try:
             if 'text' in msg:
                 raise RuntimeError("'text' key exists in the message")

@@ -77,14 +77,17 @@ class ImageProcessingBot(Bot):
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
         try:
-            msg(dict.get('text'))
-        except:
-            raise RuntimeError('Please send a photo with a caption')
-        chat_id = msg['chat']['id']
-        path_img = self.download_user_photo(msg)
-        img = Img(path_img)
-        img.blur()
-        new_img = img.save_img()
-        self.send_photo(chat_id , new_img)
+            text = msg.get('text')  # Get the 'text' value from the message dictionary
+            if text is None:
+                raise RuntimeError('No text in the message')
+            chat_id = msg['chat']['id']
+            path_img = self.download_user_photo(msg)
+            img = Img(path_img)
+            img.blur()
+            new_img = img.save_img()
+            self.send_photo(chat_id, new_img)
+        except RuntimeError as e:
+            print(f"Runtime error: {e}")
+            print('Please send a photo with a caption')
 
 

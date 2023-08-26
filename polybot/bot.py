@@ -76,27 +76,27 @@ class QuoteBot(Bot):
 class ImageProcessingBot(Bot):
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
-        self.send_text(msg['chat']['id'], "welcome to yuval photo bot.\n please sent a photo with a caption.\n and "
-                                          "you will receive the photo altered")
+        #self.send_text(msg['chat']['id'], "welcome to yuval photo bot.\n please sent a photo with a caption.\n and "
+                                         # "you will receive the photo altered")
         try:
             if 'text' in msg:
                 raise RuntimeError("'text' key exists in the message")
-            self.send_text(msg['chat']['id'],"please send a photo")
+            #self.send_text(msg['chat']['id'],"please send a photo")
             caption = msg.get('caption')
             if caption is None:
                 raise RuntimeError('No caption in the message')
-            self.send_text(msg['chat']['id'], "please add the corresponded caption.\n Blur,Contour,Rotate.\n Salt n "
-                                              "pepper, Concat")
+            else: caption = caption.lower()
+            #self.send_text(msg['chat']['id'], ("please add the corresponded caption.\n Blur,Contour,Rotate.\n Salt n pepper, Concat")
             chat_id = msg['chat']['id']
             path_img = self.download_user_photo(msg)
             img = Img(path_img)
 
             processing_functions = {
-                'Blur': img.blur,
-                'Contour': img.contour,
-                'Rotate': img.rotate,
-                'Salt n pepper': img.salt_n_pepper,
-                'Concat': img.concat
+                'blur': img.blur,
+                'contour': img.contour,
+                'rotate': img.rotate,
+                'salt n pepper': img.salt_n_pepper,
+                'concat': img.concat
             }
 
             processing_function = processing_functions.get(caption)
@@ -108,7 +108,7 @@ class ImageProcessingBot(Bot):
             new_img = img.save_img()
             self.send_photo(chat_id, new_img)
         except RuntimeError as e:
-            print(f"Runtime error: {e}")
-            print('Please send a photo with a caption')
+            self.send_text(msg['chat']['id'], e)
+
 
 
